@@ -1,0 +1,205 @@
+{% extends 'base.html' %}
+
+{% block head1 %}
+{% load static %}
+
+    <link rel="stylesheet" href="{% static 'css/login.css'%}">
+    <script src="{% static 'js/login.js'%}"></script>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+
+	{%endblock%}
+
+	{% block content %}
+	{%load static%}
+	
+
+
+<div class="login-wrap">
+	<div class="login-html">
+		<input id="tab-1" type="radio" name="tab" class="sign-in" checked><label for="tab-1" class="tab">Login</label>
+		<input id="tab-2" type="radio" name="tab" class="sign-up"><label for="tab-2" class="tab">Sign Up</label>
+		<div class="login-form">
+			
+			<div class="sign-in-htm">
+				<form action="login" method="post">
+					{% csrf_token %}
+
+				<div class="group">
+					<label for="user" class="label">Email</label>
+					<input id="email1" type="text" class="input" name="email">
+				</div>
+				<div class="group">
+					<label for="pass" class="label">Password</label>
+					<input id="pass" type="password" class="input" data-type="password" name="password">
+				</div>
+				<div class="group">
+					<input id="check" type="checkbox" class="check" checked>
+					<label for="check"><span class="icon"></span> Keep me Signed in</label>
+				</div>
+				
+				{% for msg in messages %}
+				{% if 'login' in msg.tags %}
+				<div class="group" style="text-align: center;">
+					<label for="pass" class="label" style="color: red;">{{msg}}</label>
+				</div>
+				{% endif %}
+				{% endfor %}
+				
+
+				<div class="group">
+					<input type="submit" class="button" value="Sign In">
+				</div>
+			</form>
+				<div class="hr"></div>
+				<div class="foot-lnk">
+					<a href="">Forgot Password?</a>
+				</div>
+			</div>
+			<form action=""></form>
+		
+		
+			<div class="sign-up-htm">
+
+				<form action="signup" method="post" name="registration">
+					{% csrf_token %}
+					
+				<div class="group">
+					<label for="user" class="label">Name</label>
+					<input id="name" type="text" class="input" name="name">
+				</div>
+				<div class="group input-box">
+					<label for="pass" class="label">Email Address</label>
+					<input id="email" type="email" class="input" name="email">
+					<span id="email-error" style="color: red; display: none;">This email is already taken.</span>
+				</div>
+				<div class="group">
+					<label for="pass" class="label">Phone</label>
+					<input id="phone" type="number" class="input" name="phone"pattern = "[6-9][0-9]{9}">
+				</div>
+				<div class="group">
+					<label for="user" class="label">Date Of Birth</label>
+					<input id="dob" type="date" class="input" name="dob">
+				</div>
+				
+				<div class="group">
+					<label for="pass" class="label">Password</label>
+					<input id="password" type="password" class="input" data-type="password" name="password">
+				</div>
+				<div class="group">
+					<label for="pass" class="label">Repeat Password</label>
+					<input id="password2" type="password" class="input" data-type="password" name="repassword">
+				</div>
+				{% for msg in messages %}
+				{% if 'signup' in msg.tags %}
+				<div class="group" style="text-align: center;">
+					<label for="pass" class="label" style="color: red;">{{msg}}</label>
+				</div>
+				{% endif %}
+				{% endfor %}
+				
+				<div class="group">
+					<input type="submit" class="button" value="Sign Up">
+				</div>
+			</form>
+				<div class="hr"></div>
+				<div class="foot-lnk">
+					<a href=""><label for="tab-1">Already Member?</a>
+				</div>
+			</div>
+		
+		</div>
+	</div>
+</div>
+
+
+<script type="text/javascript">
+	$(function() {
+		$("form[name='registration']").validate({
+			rules: {
+				name: "required",
+				dob: "required",
+				email: {
+					required: true,
+					email: true
+				},
+				phone: {
+					required: true,
+					number: true,
+					minlength: 10,
+					maxlength: 10
+				},
+				password: {
+					required: true,
+					minlength: 5
+				},
+				repassword: {
+					required: true,
+					equalTo: "#password"
+				}
+			},
+			messages: {
+				name: "Enter your name",
+				dob: "Enter date of birth",
+				email: "Provide a valid email address",
+				phone: {
+					required: "Provide your phone number",
+					number: "Enter a valid phone number",
+					minlength: "Phone number must be at least 10 digits",
+					maxlength: "Phone number must be no more than 10 digits"
+				},
+				password: {
+					required: "Provide a password",
+					minlength: "Password must be at least 5 characters"
+				},
+				repassword: {
+					required: "Confirm your password",
+					equalTo: "Passwords do not match"
+				}
+			},
+			submitHandler: function(form) {
+				form.submit();
+			}
+		});
+	});
+</script>
+
+<script>
+	$(document).ready(function() {
+   $("#email").on('input', function() {
+	   var email = $(this).val();
+
+	   if (email) {
+		   $.ajax({
+			   url: "{% url 'check_email' %}", 
+			   type: "GET",
+			   data: { email: email }, 
+			   success: function(response) {
+				   if (response.exists) {
+					   $("#email-error").show();  
+				   } else {
+					   $("#email-error").hide(); 
+				   }
+			   },
+			   error: function(xhr, errmsg, err) {
+				   console.log("Error: " + errmsg);
+			   }
+		   });
+	   } else {
+		   $("#email-error").hide();  
+	   }
+   });
+
+   
+   $("form").submit(function(event) {
+	   if ($("#email-error").is(":visible")) {
+		   event.preventDefault();  
+		   alert("Please fix the email error before submitting.");
+	   }
+   });
+});
+
+   </script>
+
+{%endblock%}

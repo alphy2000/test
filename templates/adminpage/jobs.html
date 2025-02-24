@@ -1,0 +1,205 @@
+{% extends 'adminpage/base.html' %}
+
+{% block head1 %}
+
+
+</head>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+{% endblock %}
+
+
+
+{% block content %}
+{%load static%}
+
+
+    <div class="bradcam_area bradcam_bg_1">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="bradcam_text">
+                        <h3>Jobs Available</h3>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+    <!-- job_listing_area_start  -->
+    <div class="job_listing_area plus_padding">
+        <div class="container">
+            <div class="row">
+                
+                <div class="col-lg-9">
+                    <div class="recent_joblist_wrap">
+                        <div class="recent_joblist white-bg ">
+                            <div class="row align-items-center">
+                                <div class="col-md-6">
+                                    <h4>Job Listing</h4>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="serch_cat d-flex justify-content-end">
+                                        <select id="companyDropdown">
+                                            <option value="">Select Company</option>
+                                            <option value="All">All</option>
+                                            {% for category in categories %}
+                                                <option value="{{ category.id }}">{{ category.name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                        <!-- <select>
+                                            <option data-display="Most Recent">Most Recent</option>
+                                            <option value="1">Marketer</option>
+                                            <option value="2">Wordpress </option>
+                                            <option value="4">Designer</option>
+                                        </select> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="job_lists m-0">
+                        <div class="row" id="jobContainer">
+
+                            {% for i in l %}
+
+                            <div class="col-lg-12 col-md-12" id="details">
+                                <div class="single_jobs white-bg d-flex justify-content-between">
+                                    <div class="jobs_left d-flex align-items-center">
+                                       
+                                        <div class="jobs_conetent">
+                                            <a href="adjobdetail/{{i.id}}"><h4>{{i.name}}</h4></a>
+                                            <div class="links_locat d-flex align-items-center">
+                                                <div class="location">
+                                                    <p>{{i.companyname.name}}</p>
+                                                </div>
+                                                <div class="location">
+                                                    <p> <i class="fa fa-map-marker"></i>{{i.location}}</p>
+                                                </div>
+                                                <div class="location">
+                                                    <p> <i class="fa fa-clock-o"></i>{{i.jobtype}}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="jobs_right">
+                                        <div class="apply_now">
+                                            <a href="adjobdetail/{{i.id}}" class="boxed-btn3">View Details</a>
+                                        </div>
+                                       
+                                    </div>
+                                    <div class="jobs_right">
+                                        <div class="apply_now">
+                                            <a href="editjob/{{i.id}}" class="boxed-btn3">Edit</a>
+                                        </div>
+                                       
+                                    </div>
+                                    <div class="jobs_right">
+                                        <div class="apply_now">
+                                            <a href="deletejob/{{i.id}}" class="boxed-btn3">Delete</a>
+                                        </div>
+                                       
+                                    </div>
+                                </div>
+                            </div>
+
+                            {% endfor %}
+
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- job_listing_area_end  -->
+
+
+
+
+
+    <!-- <h2>Select Company</h2>
+<select id="companyDropdown">
+    <option value="">-- Select Company --</option>
+    {% for category in categories %}
+        <option value="{{ category.id }}">{{ category.name }}</option>
+    {% endfor %}
+</select> -->
+
+<!-- <h3>Job Listings:</h3>
+<div class="job_lists m-0">
+    <div class="row" id="jobContainer">
+        <p>Select a company to see job listings</p>
+    </div>
+</div> -->
+
+
+
+<script>
+    $(document).ready(function() {
+        $("#companyDropdown").change(function() {
+            var company_id = $(this).val();
+
+            $.ajax({
+                url: "{% url 'get_jobs_by_company' %}",  // Django view URL
+                type: "GET",
+                data: { company_id: company_id },
+                success: function(response) {
+                    var jobContainer = $("#jobContainer");
+                    jobContainer.empty();  // Clear previous job listings
+
+                    if (response.jobs.length > 0) {
+                        $.each(response.jobs, function(index, job) {
+                            var jobHtml = `
+                                <div class="col-lg-12 col-md-12">
+                                    <div class="single_jobs white-bg d-flex justify-content-between">
+                                        <div class="jobs_left d-flex align-items-center">
+                                            <div class="jobs_conetent">
+                                                <a href="adjobdetail/${job.id}"><h4>${job.name}</h4></a>
+                                                <div class="links_locat d-flex align-items-center">
+                                                    <div class="location">
+                                                        <p>${job.companyname__name}</p>
+                                                    </div>
+                                                    <div class="location">
+                                                        <p> <i class="fa fa-map-marker"></i> ${job.location}</p>
+                                                    </div>
+                                                    <div class="location">
+                                                        <p> <i class="fa fa-clock-o"></i> ${job.jobtype}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="jobs_right">
+                                            <div class="apply_now">
+                                                <a href="adjobdetail/${job.id}" class="boxed-btn3">View Details</a>
+                                            </div>
+                                        </div>
+                                        <div class="jobs_right">
+                                            <div class="apply_now">
+                                                <a href="editjob/${job.id}" class="boxed-btn3">Edit</a>
+                                            </div>
+                                        </div>
+                                        <div class="jobs_right">
+                                            <div class="apply_now">
+                                                <a href="deletejob/${job.id}" class="boxed-btn3">Delete</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                            jobContainer.append(jobHtml);
+                        });
+                    } else {
+                        jobContainer.html("<p>No jobs found</p>");
+                    }
+                }
+            });
+        });
+    });
+</script>
+
+
+    {% endblock %}

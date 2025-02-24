@@ -1,0 +1,158 @@
+{% extends 'base.html' %}
+{% block content %}
+{%load static%}
+
+    <!-- bradcam_area  -->
+    <div class="bradcam_area bradcam_bg_1">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="bradcam_text">
+                        <h3>Edit Job Vacancy</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--/ bradcam_area  -->
+
+<div class="job_details_area">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+
+<div class="apply_job_form white-bg">
+    <h4>Job Details</h4>
+    <form action="editjob2/{{obj.id}}" method="post">
+        {% csrf_token %}
+                <div class="row">
+            <div class="col-md-6">
+                <div class="input_field">
+                    <input type="text" placeholder="Post Name" name="name" value="{{obj.name}}">
+                </div>
+            </div>
+            
+            
+            <div class="col-md-6">
+                <div class="input_field">
+                    <input type="number" placeholder="Number of vacancies" name="number" value="{{obj.number}}">
+                </div>
+            </div>
+            <!-- <div class="col-md-6">
+                <div class="input_field">
+                    <input type="text" placeholder="Contact Person" name="person" value="{{obj.person}}">
+                </div>
+            </div> -->
+            <div class="col-md-6">
+                <div class="input_field">
+                    <input type="text" placeholder="Description" name="description" value="{{obj.description}}">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="input_field">
+                    <input type="text" placeholder="Location" name="location" value="{{obj.location}}">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="single_field">
+                    <select class="wide" name="jobtype">
+                        <option data-display="{{obj.jobtype}}">{{obj.jobtype}}</option>
+                        <option value="Full Time">Full Time</option>
+                        <option value="Part Time">Part Time</option>
+                        <option value="Contract">Contract</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="input_field">
+                    <input type="number" placeholder="Working hours" name="hours" value="{{obj.hours}}">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="input_field">
+                    <input type="number" placeholder="Working days" name="days" value="{{obj.days}}">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="input_field">
+                    <input type="text" placeholder="minsalary" name="minsalary" value="{{obj.minsalary}}">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="input_field">
+                    <input type="text" placeholder="maxsalary" name="maxsalary" value="{{obj.maxsalary}}">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="input_field">
+                    <input type="text" placeholder="Qualification" name="qualification" value="{{obj.qualification}}">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="input_field">
+                    <input type="text" placeholder="skills" name="skills" value="{{obj.skills}}">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="input_field">
+                    <input type="number" placeholder="Years of experience" name="experience" value="{{obj.experience}}">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="single_field">
+                    <select class="wide" name="gender">
+                        <option data-display="{{obj.gender}}">{{obj.gender}}</option>
+                        <option value="Female">Female</option>
+                        <option value="Male">Male</option>
+                        <option value="Any">Any</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="input_field">
+                    <input type="text" placeholder="minage" name="minage" value="{{obj.minage}}">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="input_field">
+                    <input type="text" placeholder="maxage" name="maxage" value="{{obj.maxage}}">
+                </div>
+            </div>
+            
+            <!-- <div class="col-md-12">
+                <div class="input_field">
+                    <input type="text" placeholder="Website/Portfolio link">
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                      <button type="button" id="inputGroupFileAddon03"><i class="fa fa-cloud-upload" aria-hidden="true"></i>
+                      </button>
+                    </div>
+                    <div class="custom-file">
+                      <input type="file" class="custom-file-input" id="inputGroupFile03" aria-describedby="inputGroupFileAddon03">
+                      <label class="custom-file-label" for="inputGroupFile03">Upload CV</label>
+                    </div>
+                  </div>
+            </div> -->
+            <!-- <div class="col-md-12">
+                <div class="input_field">
+                    <textarea name="#" id="" cols="30" rows="10" placeholder="Coverletter"></textarea>
+                </div>
+            </div> -->
+            <div class="col-md-12">
+                <div class="submit_btn">
+                    <button class="boxed-btn3 w-100" type="submit">Save</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+{% endblock %}
