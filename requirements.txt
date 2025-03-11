@@ -5,8 +5,10 @@ distlib==0.3.7
 Django==5.1.6
 django-debug-toolbar==5.0.1
 filelock==3.12.4
+gunicorn==23.0.0
 idna==3.6
 mysqlclient==2.2.5
+packaging==24.2
 Pillow==10.1.0
 platformdirs==3.11.0
 PyMySQL==1.1.1
